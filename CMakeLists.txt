@@ -25,6 +25,8 @@
 
 if (CONFIG_PRV_LUA)
 
+    set(CMAKE_BUILD_TYPE Debug)
+
     # ===============================================
     # Define 'lua' target that compiles Lua binaries.
     # ===============================================
@@ -67,6 +69,7 @@ if (CONFIG_PRV_LUA)
     add_library(lua STATIC ${SOURCE_FILES})
 
     target_include_directories(lua PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+    target_compile_options(lua PRIVATE -O0 -march=armv7e-m -fdce -ffunction-sections -fdata-sections)
 
     # ====================================================================
     # Define 'prv_lua' target that exposes Lua headers to the application.

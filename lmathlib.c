@@ -609,7 +609,7 @@ static void setseed (lua_State *L, Rand64 *state,
 ** randomization).
 */
 static void randseed (lua_State *L, RanState *state) {
-  lua_Unsigned seed1 = (lua_Unsigned)time(NULL);
+  lua_Unsigned seed1 = (lua_Unsigned)(0);
   lua_Unsigned seed2 = (lua_Unsigned)(size_t)L;
   setseed(L, state->s, seed1, seed2);
 }
