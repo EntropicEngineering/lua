@@ -1,0 +1,25 @@
+Design goals:
+	- Separate Lua VMs so that one cannot crash another
+		- Separate memory protection areas and tasks, one per VM
+		- Separate allocators, logs, etc
+	- Minimize size of Lua code and state
+		- Remove parser, os integration, other unneeded features
+		- Consider removing some coroutine machinery if reasonable?
+	- Build extensible/forward-compatible interface for user lua code to interact
+		- Table parameters to allow for new members
+		- Version information; think about compatibility layers/needs for the future
+	- Minimize wasted cycles/blocking
+		- Sleep-mask or similar concept
+		- OR: consider integrating with lua coroutine system directly?
+	- Unit-of-code for users to deploy and manage
+		- Program names, hashes, options
+		- Allow one program to load another as a library?
+
+Implementation notes:
+	- Lua has two state objects; one is thread-local (lua_State) and one is global (global_State) per-VM. (See https://poga.github.io/lua53-notes/state.html .) The global state object includes a pointer to the alloc function used for the VM -- seems like a natural extension point.
+		- Add pointers there to other functions the VM uses (e.g. writeline, time (although really it wants rand, so expose that instead), etc.) 
+		- Modify lua to call these where needed. Then we can pass different implementations of these functions for our N VMs (allocating from N memory areas, writing to N different logs, etc.)
+		- Where lua uses non-VM-local stdlib functions not present in newlib libc, rewrite them as a stub compiled into lua. Switch back to using minimal libc and not using POSIX APIs where possible.
+	- We probably want to reimplement our own built-in library (including much of the same stuff as in 'base' and 'math', but probably not the coroutine and system libs) -- this seems saner than trying to maintain pared-down versions of all the libraries/minimizes size of patch compared to upstream.
+	- Given our architectural discussion the other day, do we want the lua coroutine stuff at all? It seems to imply/require a different programming model from what we discussed.
+	- Parser and other stuff we don't need can be #ifdef'ed out and disabled in our built scripts. This will mean we carry a smaller patch relative to upstream.
