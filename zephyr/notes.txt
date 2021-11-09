@@ -23,3 +23,6 @@ Implementation notes:
 	- We probably want to reimplement our own built-in library (including much of the same stuff as in 'base' and 'math', but probably not the coroutine and system libs) -- this seems saner than trying to maintain pared-down versions of all the libraries/minimizes size of patch compared to upstream.
 	- Given our architectural discussion the other day, do we want the lua coroutine stuff at all? It seems to imply/require a different programming model from what we discussed.
 	- Parser and other stuff we don't need can be #ifdef'ed out and disabled in our built scripts. This will mean we carry a smaller patch relative to upstream.
+
+To see external symbols for lua, build as normal (i.e. build upstream lua) and run:
+$ ld -r -o deleteme.o --whole-archive liblua.a ; nm -C --undefined-only deleteme.o ; rm deleteme.o
