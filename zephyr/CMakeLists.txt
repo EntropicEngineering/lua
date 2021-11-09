@@ -25,6 +25,10 @@
 
 if (CONFIG_PRV_LUA)
 
+    zephyr_library_named(lua)
+
+    zephyr_link_interface(lua)
+
     set(SOURCE_FILES
             ${ZEPHYR_CURRENT_MODULE_DIR}/lapi.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lauxlib.c
@@ -60,15 +64,15 @@ if (CONFIG_PRV_LUA)
             ${ZEPHYR_CURRENT_MODULE_DIR}/lvm.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lzio.c)
 
-    zephyr_sources(${SOURCE_FILES})
+    zephyr_library_sources(${SOURCE_FILES})
 
-    target_include_directories(zephyr PRIVATE ${ZEPHYR_CURRENT_MODULE_DIR})
+    zephyr_library_include_directories(${ZEPHYR_CURRENT_MODULE_DIR})
 
     # ====================================================================
     # Define 'prv_lua' target that exposes Lua headers to the application.
     # ====================================================================
 
-#    zephyr_interface_library_named(prv-lua)
+    zephyr_interface_library_named(prv-lua)
 
     set(INTERFACE_HEADERS
             ${ZEPHYR_CURRENT_MODULE_DIR}/lauxlib.h
@@ -80,6 +84,8 @@ if (CONFIG_PRV_LUA)
 
     file(COPY ${INTERFACE_HEADERS} DESTINATION ${INTERFACE_INCLUDE_DIR})
 
-    zephyr_include_directories(${INTERFACE_INCLUDE_DIR})
+    target_include_directories(prv-lua INTERFACE ${INTERFACE_INCLUDE_DIR})
+
+    zephyr_library_link_libraries(prv-lua)
 
 endif()
