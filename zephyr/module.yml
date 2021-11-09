@@ -14,10 +14,5 @@
 #   limitations under the License.
 #
 
-name: prv_lua
-build:
-    cmake: .
-    kconfig: zephyr/Kconfig
-#    depends:
-#        - nrfxlib
-#        - openthread
+name: prv-lua
+build: {}
