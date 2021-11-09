@@ -1,0 +1,23 @@
+
+#ifndef __LUA_ZEPHYRCOMPAT_COMPAT_H__
+#define __LUA_ZEPHYRCOMPAT_COMPAT_H__
+
+#include "zephyrcompat/prefix.h"
+#include "lstate.h"
+
+l_noret lua_compat_throw(lua_State *L, struct lua_longjmp *errorJmp);
+int lua_compat_randseed();
+
+double ldexp (double x, int exp);
+double pow (double base, double exponent);
+double floor (double x);
+double strtod (const char* str, char** endptr);
+char * strpbrk (const char * str1, const char * str2 );
+double frexp (double x, int* exp);
+int strcoll (const char * str1, const char * str2 );
+double fmod (double numer, double denom);
+
+void lua_compat_writestring(const char* s, int l);
+void lua_compat_writestringerror(const char* m, char* s);
+
+#endif //__LUA_ZEPHYRCOMPAT_COMPAT_H__

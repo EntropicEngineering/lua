@@ -41,5 +41,7 @@
 
 #endif			/* } */
 
+#include "zephyrcompat/prefix.h"
+
 #endif
 

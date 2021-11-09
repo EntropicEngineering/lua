@@ -7,6 +7,8 @@
 #ifndef lstate_h
 #define lstate_h
 
+#include "lprefix.h"
+
 #include "lua.h"
 
 #include "lobject.h"

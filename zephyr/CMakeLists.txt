@@ -27,42 +27,35 @@ if (CONFIG_PRV_LUA)
 
     set(SOURCE_FILES
             ${ZEPHYR_CURRENT_MODULE_DIR}/lapi.c
-            ${ZEPHYR_CURRENT_MODULE_DIR}/lauxlib.c
-            ${ZEPHYR_CURRENT_MODULE_DIR}/lbaselib.c
+#            ${ZEPHYR_CURRENT_MODULE_DIR}/lbaselib.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lcode.c
-            ${ZEPHYR_CURRENT_MODULE_DIR}/lcorolib.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lctype.c
-            ${ZEPHYR_CURRENT_MODULE_DIR}/ldblib.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/ldebug.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/ldo.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/ldump.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lfunc.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lgc.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/linit.c
-            ${ZEPHYR_CURRENT_MODULE_DIR}/liolib.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/llex.c
-            ${ZEPHYR_CURRENT_MODULE_DIR}/lmathlib.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lmem.c
-            ${ZEPHYR_CURRENT_MODULE_DIR}/loadlib.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lobject.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lopcodes.c
-            ${ZEPHYR_CURRENT_MODULE_DIR}/loslib.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lparser.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lstate.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lstring.c
-            ${ZEPHYR_CURRENT_MODULE_DIR}/lstrlib.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/ltable.c
-            ${ZEPHYR_CURRENT_MODULE_DIR}/ltablib.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/ltests.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/ltm.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lundump.c
-            ${ZEPHYR_CURRENT_MODULE_DIR}/lutf8lib.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lvm.c
-            ${ZEPHYR_CURRENT_MODULE_DIR}/lzio.c)
+            ${ZEPHYR_CURRENT_MODULE_DIR}/lzio.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyrcompat/compat.c)
 
     zephyr_sources(${SOURCE_FILES})
 
     target_include_directories(zephyr PRIVATE ${ZEPHYR_CURRENT_MODULE_DIR})
+
+    target_include_directories(zephyr PRIVATE BEFORE ${ZEPHYR_CURRENT_MODULE_DIR}/zephyrcompat/libc/)
 
     # ====================================================================
     # Define 'prv_lua' target that exposes Lua headers to the application.
@@ -79,6 +72,7 @@ if (CONFIG_PRV_LUA)
     set(INTERFACE_INCLUDE_DIR ${ZEPHYR_BINARY_DIR}/include/generated/prv)
 
     file(COPY ${INTERFACE_HEADERS} DESTINATION ${INTERFACE_INCLUDE_DIR})
+    file(COPY ${ZEPHYR_CURRENT_MODULE_DIR}/zephyrcompat/conf.h DESTINATION ${INTERFACE_INCLUDE_DIR}/zephyrcompat)
 
     zephyr_include_directories(${INTERFACE_INCLUDE_DIR})
 
