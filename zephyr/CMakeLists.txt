@@ -27,6 +27,7 @@ if (CONFIG_PRV_LUA)
 
     set(SOURCE_FILES
             ${ZEPHYR_CURRENT_MODULE_DIR}/lapi.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/lauxlib.c
 #            ${ZEPHYR_CURRENT_MODULE_DIR}/lbaselib.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lcode.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lctype.c

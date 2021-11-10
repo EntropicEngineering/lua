@@ -16,8 +16,9 @@ char * strpbrk (const char * str1, const char * str2 );
 double frexp (double x, int* exp);
 int strcoll (const char * str1, const char * str2 );
 double fmod (double numer, double denom);
+const char * strerror(int e);
 
-void lua_compat_writestring(const char* s, int l);
-void lua_compat_writestringerror(const char* m, char* s);
+void lua_compat_writestring(const char* s, const int l);
+void lua_compat_writestringerror(const char* m, const char* s);
 
 #endif //__LUA_ZEPHYRCOMPAT_COMPAT_H__

@@ -18,11 +18,12 @@ char * strpbrk (const char * str1, const char * str2 ) { STUB() }
 double frexp (double x, int* exp) { STUB() }
 int strcoll (const char * str1, const char * str2 ) { STUB() }
 double fmod (double numer, double denom) { STUB() }
+const char * strerror(int e) { STUB() }
 
-void lua_compat_writestring(const char* s, int l) {
+void lua_compat_writestring(const char* s, const int l) {
 	LOG_INF("lua_compat_writestring: %.*s", l, s);
 }
-void lua_compat_writestringerror(const char* f, char* s){
+void lua_compat_writestringerror(const char* f, const char* s){
 	LOG_ERR("lua_compat_writestringerror: %s", s);
 }
 
