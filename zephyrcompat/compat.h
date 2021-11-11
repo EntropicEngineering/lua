@@ -6,7 +6,6 @@
 #include "lstate.h"
 
 l_noret lua_compat_throw(lua_State *L, struct lua_longjmp *errorJmp);
-int lua_compat_randseed();
 
 double ldexp (double x, int exp);
 double pow (double base, double exponent);
@@ -18,6 +17,7 @@ int strcoll (const char * str1, const char * str2 );
 double fmod (double numer, double denom);
 const char * strerror(int e);
 
+int lua_compat_randseed();
 void lua_compat_writestring(const char* s, const int l);
 void lua_compat_writestringerror(const char* m, const char* s);
 
