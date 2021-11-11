@@ -17,6 +17,7 @@
 config PRV_LUA
 	bool "Enable custom Lua fork"
 	default n
+    imply CONFIG_APP_LINK_WITH_PRV_LUA
 #	imply NFC_T2T_NRFXLIB
 #	imply NFC_NDEF
 #	imply NFC_NDEF_MSG
