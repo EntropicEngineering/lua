@@ -2,7 +2,7 @@
 #ifndef __LUA_ZEPHYRCOMPAT_COMPAT_H__
 #define __LUA_ZEPHYRCOMPAT_COMPAT_H__
 
-#include "zephyrcompat/prefix.h"
+#include "zephyr/compat/prefix.h"
 #include "lstate.h"
 
 l_noret lua_compat_throw(lua_State *L, struct lua_longjmp *errorJmp);

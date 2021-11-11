@@ -54,14 +54,16 @@ if (CONFIG_PRV_LUA)
             ${ZEPHYR_CURRENT_MODULE_DIR}/lundump.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lvm.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lzio.c
-            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyrcompat/compat.c)
+            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/compat.c)
 
     zephyr_library_sources(${SOURCE_FILES})
 
     zephyr_library_include_directories(${ZEPHYR_CURRENT_MODULE_DIR})
 
+    zephyr_library_include_directories(${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/libc/ BEFORE)
+
     # ====================================================================
-    # Define 'prv_lua' target that exposes Lua headers to the application.
+    # Define 'prv-lua' target that exposes Lua headers to the application.
     # ====================================================================
 
     zephyr_interface_library_named(prv-lua)
@@ -75,9 +77,7 @@ if (CONFIG_PRV_LUA)
     set(INTERFACE_INCLUDE_DIR ${ZEPHYR_BINARY_DIR}/include/generated/prv)
 
     file(COPY ${INTERFACE_HEADERS} DESTINATION ${INTERFACE_INCLUDE_DIR})
-    file(COPY ${ZEPHYR_CURRENT_MODULE_DIR}/zephyrcompat/conf.h DESTINATION ${INTERFACE_INCLUDE_DIR}/zephyrcompat)
-
-    zephyr_library_include_directories(prv-lua PRIVATE BEFORE ${ZEPHYR_CURRENT_MODULE_DIR}/zephyrcompat/libc/)
+    file(COPY ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/conf.h DESTINATION ${INTERFACE_INCLUDE_DIR}/zephyr/compat)
 
     zephyr_library_link_libraries(prv-lua)
 

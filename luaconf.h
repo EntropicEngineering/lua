@@ -779,7 +779,7 @@
 */
 
 
-#include "zephyrcompat/conf.h"
+#include "zephyr/compat/conf.h"
 
 
 #endif

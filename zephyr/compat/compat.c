@@ -1,6 +1,6 @@
 
 #include <logging/log.h>
-#include "zephyrcompat/compat.h"
+#include "zephyr/compat/compat.h"
 #include <kernel.h>
 
 LOG_MODULE_REGISTER(lua_compat, LOG_LEVEL_DBG);

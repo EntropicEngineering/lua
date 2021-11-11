@@ -1,7 +1,7 @@
 
 // Included by lprefix.h, and so by most lua files
 
-#include "zephyrcompat/compat.h"
+#include "zephyr/compat/compat.h"
 #include <stdint.h>
 
 #define l_signalT int
