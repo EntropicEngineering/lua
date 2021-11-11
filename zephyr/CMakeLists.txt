@@ -60,8 +60,6 @@ if (CONFIG_PRV_LUA)
 
     zephyr_library_include_directories(${ZEPHYR_CURRENT_MODULE_DIR})
 
-    target_include_directories(zephyr PRIVATE BEFORE ${ZEPHYR_CURRENT_MODULE_DIR}/zephyrcompat/libc/)
-
     # ====================================================================
     # Define 'prv_lua' target that exposes Lua headers to the application.
     # ====================================================================
@@ -79,7 +77,7 @@ if (CONFIG_PRV_LUA)
     file(COPY ${INTERFACE_HEADERS} DESTINATION ${INTERFACE_INCLUDE_DIR})
     file(COPY ${ZEPHYR_CURRENT_MODULE_DIR}/zephyrcompat/conf.h DESTINATION ${INTERFACE_INCLUDE_DIR}/zephyrcompat)
 
-    target_include_directories(prv-lua INTERFACE ${INTERFACE_INCLUDE_DIR})
+    zephyr_library_include_directories(prv-lua PRIVATE BEFORE ${ZEPHYR_CURRENT_MODULE_DIR}/zephyrcompat/libc/)
 
     zephyr_library_link_libraries(prv-lua)
 
