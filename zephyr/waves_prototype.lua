@@ -1,5 +1,5 @@
 function waves (setup)
-    setup += {
+    local CONST = {
         max_period = 40, min_period = 4,           -- seconds
         min_TENS_freq = 60, max_TENS_freq = 360,   -- Hz
         min_TENS_pulse = 50, max_TENS_pulse = 200, -- microseconds
@@ -8,13 +8,13 @@ function waves (setup)
         max_LED = {r = 1, g = 1, b = 1}
     }
 
-    local period = setup.max_period
+    local period = CONST.max_period
 
     -- Vary period linearly between min_period and max_period, with max_period at 0 adjust
     local function update_period(adjust)
-        period = setup.min_period +
-                 (setup.max_period - setup.min_period) *
-                 ((setup.ARG_MAX - adjust) / setup.ARG_MAX)
+        period = CONST.min_period +
+                 (CONST.max_period - CONST.min_period) *
+                 ((CONST.ARG_MAX - adjust) / CONST.ARG_MAX)
         return period
     end
 
@@ -42,21 +42,21 @@ function waves (setup)
     end
 
     local function update_TENS_freq(delta_t)
-        return linear_ramp_up_ramp_down(delta_t, setup.min_TENS_freq, setup.max_TENS_freq)
+        return linear_ramp_up_ramp_down(delta_t, CONST.min_TENS_freq, CONST.max_TENS_freq)
     end
 
     local function udpate_TENS_pulse(delta_t)
-        return linear_ramp_up_ramp_down(delta_t, setup.min_TENS_pulse, setup.max_TENS_pulse)
+        return linear_ramp_up_ramp_down(delta_t, CONST.min_TENS_pulse, CONST.max_TENS_pulse)
     end
 
     local function udpate_motor_power(delta_t)
-        return linear_ramp_up_ramp_down(delta_t, setup.min_motor, setup.max_motor)
+        return linear_ramp_up_ramp_down(delta_t, CONST.min_motor, CONST.max_motor)
     end
 
     local function update_LED(delta_t)
-        local r = linear_ramp_up_ramp_down(delta_t, setup.min_LED.r, setup.max_LED.r)
-        local g = linear_ramp_up_ramp_down(delta_t, setup.max_LED.g, setup.max_LED.g)
-        local b = linear_ramp_up_ramp_down(delta_t, setup.max_LED.b, setup.max_LED.b)
+        local r = linear_ramp_up_ramp_down(delta_t, CONST.min_LED.r, CONST.max_LED.r)
+        local g = linear_ramp_up_ramp_down(delta_t, CONST.max_LED.g, CONST.max_LED.g)
+        local b = linear_ramp_up_ramp_down(delta_t, CONST.max_LED.b, CONST.max_LED.b)
         return {r = r, g = g, b = b}
     end
 
