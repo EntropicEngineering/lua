@@ -37,7 +37,7 @@ function waves (setup)
     local function linear_ramp_up_ramp_down(dt, min, max)
         local ramp, progress = progress(dt)
         -- If we're ramping down, pretend we're ramping up but backwards
-        if ramp == RAMP.DOWN then progress = 1 - progress
+        if ramp == RAMP.DOWN then progress = 1 - progress end
         return (max - min) * progress + min
     end
 
