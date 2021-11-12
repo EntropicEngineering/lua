@@ -78,7 +78,7 @@ function waves (setup)
 
     -- This function is called periodically by the firmware
     -- 'timestamp' is the current time, 'adjust' is the value of the 'Adjust' slider
-    return function periodic(timestamp, adjust)
+    local function periodic(timestamp, adjust)
         update_period(adjust)
 
         -- Calculate how long it's been since the pattern first started (stored in setup.timestamp)
@@ -102,4 +102,6 @@ function waves (setup)
         -- Return settings for the channels we control.
         return channel_settings
     end
+
+    return periodic
 end
