@@ -29,7 +29,7 @@ function waves (setup)
     local function update_period(adjust)
         period = CONST.min_period +
                  (CONST.max_period - CONST.min_period) *
-                 ((CONST.ARG_MAX - adjust) / CONST.ARG_MAX)
+                 ((setup.adjust_max - adjust) / setup.adjust_max)
         return period
     end
 
@@ -61,11 +61,11 @@ function waves (setup)
         return linear_ramp_up_ramp_down(delta_t, CONST.min_TENS_freq, CONST.max_TENS_freq)
     end
 
-    local function udpate_TENS_pulse(delta_t)
+    local function update_TENS_pulse(delta_t)
         return linear_ramp_up_ramp_down(delta_t, CONST.min_TENS_pulse, CONST.max_TENS_pulse)
     end
 
-    local function udpate_motor_power(delta_t)
+    local function update_motor_power(delta_t)
         return linear_ramp_up_ramp_down(delta_t, CONST.min_motor, CONST.max_motor)
     end
 
@@ -88,14 +88,14 @@ function waves (setup)
         outputs_table = {
             OUTPUT_TYPE_TENS = TENS{frequency = update_TENS_freq(dt), pulse = update_TENS_pulse(dt)},
             OUTPUT_TYPE_ERM = ERM{power = update_motor_power(dt)},
-            OUTPUT_TYPE_LED = LED(update_LED(dt))
+            OUTPUT_TYPE_LED = LED{values = update_LED(dt)}
         }
 
         -- We only want to return settings for channels that we have control over.
         channel_settings = {}
 
         -- Iterate through the channels we control and set their outputs according to the output type.
-        for index, type in pairs(get_active_channels(setup)) do
+        for index, type in pairs(setup.active_channels) do
             channel_settings[index] = outputs_table[type]
         end
 
