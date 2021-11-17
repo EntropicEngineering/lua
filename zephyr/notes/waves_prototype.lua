@@ -71,8 +71,8 @@ function waves (setup)
 
     local function update_LED(delta_t)
         local r = linear_ramp_up_ramp_down(delta_t, CONST.min_LED.r, CONST.max_LED.r)
-        local g = linear_ramp_up_ramp_down(delta_t, CONST.max_LED.g, CONST.max_LED.g)
-        local b = linear_ramp_up_ramp_down(delta_t, CONST.max_LED.b, CONST.max_LED.b)
+        local g = linear_ramp_up_ramp_down(delta_t, CONST.min_LED.g, CONST.max_LED.g)
+        local b = linear_ramp_up_ramp_down(delta_t, CONST.min_LED.b, CONST.max_LED.b)
         return {r = r, g = g, b = b}
     end
 
