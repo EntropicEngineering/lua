@@ -16,12 +16,15 @@ with open('output.csv', 'r') as fd:
 timestamps = [x[header.index("timestamp")] for x in rows]
 seriesdata = {}
 for item in header:
-	if item != "timestamp" and item in toshow:
-		seriesdata[item] = [x[header.index(item)] for x in rows]
+	if item != "timestamp":
+		seriesdata[item] = [float(x[header.index(item)]) for x in rows]
+
+# print(seriesdata['erm.power'])
 
 fig, ax = plt.subplots()
 for series, values in seriesdata.items():
-	ax.plot(timestamps, values, label=series)
+	if series in toshow:
+		ax.plot(timestamps, values, label=series)
 ax.legend()
 
 ax.set(xlabel='Time (s)', ylabel='Values')
