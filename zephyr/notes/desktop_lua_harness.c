@@ -16,6 +16,7 @@ static int noop(lua_State *l)
     return 1;
 }
 
+// Adapted from https://gist.github.com/yorung/3df1274632f4fa7fabfc
 void _dumpStack(lua_State* L, const char* func, int line)
 {
     int top = lua_gettop(L);
