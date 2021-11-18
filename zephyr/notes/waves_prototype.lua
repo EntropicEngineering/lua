@@ -106,7 +106,9 @@ local function waves (setup)
     return periodic
 end
 
-local title = "Waves"
-local description = "Pattern intensity ramps up and back down."
+local metadata{
+    title = "Waves",
+    description = "Pattern intensity ramps up and back down."
+}
 
-return title, description, waves
+return metadata, waves
