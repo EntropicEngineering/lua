@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#define CHECK0(x) {if((x)!=0) {printf("Error: Call failed at %s:%d\n", __func__, __LINE__); abort();}}
+#define assert0(x) assert(x==0);
 
 static int noop(lua_State *l)
 {
@@ -66,10 +66,10 @@ int main (void)
     lua_register(l, "LED", noop);
 
     // load script
-    CHECK0(luaL_dofile(l, "waves_prototype.lua"));
+    assert0(luaL_dofile(l, "waves_prototype.lua"));
 
     // get table_to_string
-    CHECK0(luaL_dofile(l, "util.lua"));
+    assert0(luaL_dofile(l, "util.lua"));
 
     lua_getglobal(l, "script");
 
@@ -114,14 +114,25 @@ int main (void)
     
     // call script(setup) to get closure, one argument (setup), one result
     lua_call(l, 1, 1);
+    int periodic = lua_gettop(l);
 
-    lua_pushnumber(l, 0); // timestamp
-    lua_pushinteger(l, 0xffff); // adjust
-    lua_call(l, 2, 1); // 2 args (timestamp, adjust) one return
+    for (float ts=0; ts<10; ts+=0.1) {
+        lua_pushvalue(l, periodic);
+        lua_pushnumber(l, ts); // timestamp
+        lua_pushinteger(l, 0xffff); // adjust
+        lua_call(l, 2, 1); // 2 args (timestamp, adjust) one return
 
-    table_to_string(l, "output: ");
+        printf("ts: %f\n", ts);
+        table_to_string(l, "output: "); // print table on top of stack
+
+
+        lua_pop(l, 1); // pop table
+    }
+
+    // Make sure stack is clean (that we haven't been leaking memory). Should be only the `periodic' function.
 
     lua_pop(l, 1);
+    assert(lua_gettop(l) == 0);
 
     lua_close(l);
     return 0;
