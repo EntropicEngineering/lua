@@ -11,7 +11,7 @@ double ldexp (double x, int exp);
 double pow (double base, double exponent);
 double floor (double x);
 double strtod (const char* str, char** endptr);
-char * strpbrk (const char * str1, const char * str2 );
+const char * strpbrk (const char * str1, const char * str2 );
 double frexp (double x, int* exp);
 int strcoll (const char * str1, const char * str2 );
 double fmod (double numer, double denom);

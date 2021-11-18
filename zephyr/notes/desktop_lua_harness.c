@@ -123,15 +123,13 @@ int main (void)
         lua_pushinteger(l, 0xffff); // adjust
         lua_call(l, 2, 1); // 2 args (timestamp, adjust) one return
 
-        printf("ts: %f\n", ts);
+        printf("ts: %f, top=%d\n", ts, lua_gettop(l));
         table_to_string(l, "output: "); // print table on top of stack
-
 
         lua_pop(l, 1); // pop table
     }
 
     // Make sure stack is clean (that we haven't been leaking memory). Should be only the `periodic' function.
-
     lua_pop(l, 1);
     assert(lua_gettop(l) == 0);
 
