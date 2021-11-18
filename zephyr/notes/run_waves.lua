@@ -15,7 +15,7 @@ function LED(x)
 	return x
 end
 
-dofile('waves_prototype.lua')
+metadata, waves = dofile('waves_functional_prototype.lua')
 
 setup = {
 	timestamp = 0,

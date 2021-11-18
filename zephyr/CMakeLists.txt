@@ -16,20 +16,41 @@
 
 #
 #   @file
-#     CMake sub-project defining 'lua' target which represents Lua library
-#     as well as 'prv_lua' which is the public interface of 'lua' accessible
+#     CMake sub-project defining 'prv-lua' target which represents Lua library
+#     as well as 'lua' which is the public interface of 'lua' accessible
 #     from zephyr.
 #     It is assumed that find_package(Zephyr) has been called before
 #     including this file.
 #
 
-if (CONFIG_PRV_LUA)
+if (CONFIG_LUA)
 
-    zephyr_library_named(lua)
+    # ====================================================================
+    # Define 'lua' target that exposes Lua headers to the application.
+    # ====================================================================
 
-    zephyr_link_interface(lua)
+    zephyr_interface_library_named(lua)
 
-    set(SOURCE_FILES
+    set(INTERFACE_HEADERS
+            ${ZEPHYR_CURRENT_MODULE_DIR}/lauxlib.h
+            ${ZEPHYR_CURRENT_MODULE_DIR}/lua.h
+            ${ZEPHYR_CURRENT_MODULE_DIR}/luaconf.h
+            ${ZEPHYR_CURRENT_MODULE_DIR}/lualib.h)
+
+    set(INTERFACE_INCLUDE_DIR ${ZEPHYR_BINARY_DIR}/include/generated/prv/lua)
+
+    file(COPY ${INTERFACE_HEADERS} DESTINATION ${INTERFACE_INCLUDE_DIR})
+    file(COPY ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/conf.h DESTINATION ${INTERFACE_INCLUDE_DIR}/zephyr/compat)
+
+    target_include_directories(lua INTERFACE ${INTERFACE_INCLUDE_DIR})
+
+    # ====================================================================
+    # Define 'prv-lua' target that builds Lua.
+    # ====================================================================
+
+    zephyr_library_named(prv-lua)
+
+    zephyr_library_sources(
             ${ZEPHYR_CURRENT_MODULE_DIR}/lapi.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lauxlib.c
 #            ${ZEPHYR_CURRENT_MODULE_DIR}/lbaselib.c
@@ -56,29 +77,8 @@ if (CONFIG_PRV_LUA)
             ${ZEPHYR_CURRENT_MODULE_DIR}/lzio.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/compat.c)
 
-    zephyr_library_sources(${SOURCE_FILES})
-
     zephyr_library_include_directories(${ZEPHYR_CURRENT_MODULE_DIR})
 
     zephyr_library_include_directories(${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/libc/ BEFORE)
-
-    # ====================================================================
-    # Define 'prv-lua' target that exposes Lua headers to the application.
-    # ====================================================================
-
-    zephyr_interface_library_named(prv-lua)
-
-    set(INTERFACE_HEADERS
-            ${ZEPHYR_CURRENT_MODULE_DIR}/lauxlib.h
-            ${ZEPHYR_CURRENT_MODULE_DIR}/lua.h
-            ${ZEPHYR_CURRENT_MODULE_DIR}/luaconf.h
-            ${ZEPHYR_CURRENT_MODULE_DIR}/lualib.h)
-
-    set(INTERFACE_INCLUDE_DIR ${ZEPHYR_BINARY_DIR}/include/generated/prv)
-
-    file(COPY ${INTERFACE_HEADERS} DESTINATION ${INTERFACE_INCLUDE_DIR})
-    file(COPY ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/conf.h DESTINATION ${INTERFACE_INCLUDE_DIR}/zephyr/compat)
-
-    zephyr_library_link_libraries(prv-lua)
 
 endif()

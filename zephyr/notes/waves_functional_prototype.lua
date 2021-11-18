@@ -12,11 +12,11 @@
 --  and the current value of the 'Adjust' slider for the channel(s) it's playing on. The 'periodic' function then
 --  must return configuration settings appropriate for the types of channels it's playing on.
 --]]
-function waves (setup)
+local function waves (setup)
     local CONST = {
         max_period = 40, min_period = 4,            -- The period of the 'intensity wave', in seconds
         min_TENS_freq = 60, max_TENS_freq = 360,    -- Frequency of TENS pulses, in Hz
-        min_TENS_pulse = 50, max_TENS_pulse = 200,  -- Length of each half of the TENS pulse, in microseconds
+        min_TENS_width = 50, max_TENS_width = 200,  -- Duration of each half of the TENS pulse, in microseconds
         min_motor = 0.1, max_motor = 1,             -- Motor power, as a percentile
         min_LED = {r = 0.1, g = 0.1, b =0.1},       -- LED values broken into red, green, and blue percentile components
         max_LED = {r = 1, g = 1, b = 1}             -- with each component representing the strength of that color
@@ -61,8 +61,8 @@ function waves (setup)
         return linear_ramp_up_ramp_down(delta_t, CONST.min_TENS_freq, CONST.max_TENS_freq)
     end
 
-    local function update_TENS_pulse(delta_t)
-        return linear_ramp_up_ramp_down(delta_t, CONST.min_TENS_pulse, CONST.max_TENS_pulse)
+    local function update_TENS_width(delta_t)
+        return linear_ramp_up_ramp_down(delta_t, CONST.min_TENS_width, CONST.max_TENS_width)
     end
 
     local function update_motor_power(delta_t)
@@ -82,17 +82,17 @@ function waves (setup)
         update_period(adjust)
 
         -- Calculate how long it's been since the pattern first started (stored in setup.timestamp)
-        dt = timestamp - setup.timestamp
+        local dt = timestamp - setup.timestamp
 
         -- A lookup table to match the correct output values to the type of output for a given channel
-        outputs_table = {
-            OUTPUT_TYPE_TENS = TENS{frequency = update_TENS_freq(dt), pulse = update_TENS_pulse(dt)},
-            OUTPUT_TYPE_ERM = ERM{power = update_motor_power(dt)},
-            OUTPUT_TYPE_LED = LED{values = update_LED(dt)}
+        local outputs_table = {
+            toyOS.OUTPUT_TYPE_TENS = toyOS.TENS{frequency = update_TENS_freq(dt), width = update_TENS_width(dt)},
+            toyOS.OUTPUT_TYPE_ERM = toyOS.ERM{power = update_motor_power(dt)},
+            toyOS.OUTPUT_TYPE_LED = toyOS.LED(update_LED(dt))
         }
 
         -- We only want to return settings for channels that we have control over.
-        channel_settings = {}
+        local channel_settings = {}
 
         -- Iterate through the channels we control and set their outputs according to the output type.
         for index, type in pairs(setup.active_channels) do
@@ -106,4 +106,9 @@ function waves (setup)
     return periodic
 end
 
-script = waves
+local metadata{
+    title = "Waves",
+    description = "Pattern intensity ramps up and back down."
+}
+
+return metadata, waves
