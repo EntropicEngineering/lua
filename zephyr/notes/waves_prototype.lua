@@ -105,3 +105,5 @@ function waves (setup)
 
     return periodic
 end
+
+script = waves

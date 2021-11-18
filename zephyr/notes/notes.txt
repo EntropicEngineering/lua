@@ -26,3 +26,8 @@ Implementation notes:
 
 To see external symbols for lua, build as normal (i.e. build upstream lua) and run:
 $ ld -r -o deleteme.o --whole-archive liblua.a ; nm -C --undefined-only deleteme.o ; rm deleteme.o
+
+To build desktop lua harness:
+$ gcc -I~/Documents/ee/lua-5.4.3/src/ -llua desktop_lua_harness.c && ./a.out
+
+(replace ~/Documents/ee/lua-5.4.3/src/ with path to your local NORMAL lua copy that you have built (needs liblua.a))
