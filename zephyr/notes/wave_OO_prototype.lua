@@ -1,4 +1,4 @@
-Waves = {
+Program = {
     title = "Waves",
     description = "Pattern intensity ramps up and back down.",
     CONST = {
@@ -11,7 +11,7 @@ Waves = {
     }
 }
 
-function Waves:start(setup)
+function Program:start(setup)
     self.timestamp = setup.timestamp        -- Start time
     self.adjust_max = setup.adjust_max      -- Max value of adjust
     -- Set the initial period of the overall pattern to max, i.e. slowest rate of change.
@@ -19,14 +19,14 @@ function Waves:start(setup)
 end
 
 -- A helper function to vary the period linearly between min_period and max_period, with max_period at 0 adjust
-function Waves:update_period(adjust)
+function Program:update_period(adjust)
     self.period = self.CONST.min_period +
                   (self.CONST.max_period - self.CONST.min_period) *
                   ((self.adjust_max - adjust) / self.adjust_max)
 end
 
 -- Vary linearly between min and max and min, creating a triangle wave output
-function Waves:triangle_wave(delta_t, min, max)
+function Program:triangle_wave(delta_t, min, max)
     local completion = (delta_t % self.period) / self.period  -- completion % of the whole pattern
     if completion < 1/2 then    -- Ramping up
         completion = completion * 2             -- 50% overall completion is 100% of ramp up completion
@@ -37,7 +37,7 @@ function Waves:triangle_wave(delta_t, min, max)
     return (max - min) * completion + min
 end
 
-function Waves:run(timestamp, adjust)
+function Program:run(timestamp, adjust)
     self.update_period(adjust)
 
     local delta_t = timestamp - self.timestamp
@@ -68,4 +68,4 @@ end
 --   * The "run" field must also be a function and will be called repeatedly in order to update the toy outputs.
 --     "run" will be passed a timestamp and a the value of the 'Adjust' slider for its associated channel.
 --]]
-return toyOS(Waves)
+return toyOS(Program)
