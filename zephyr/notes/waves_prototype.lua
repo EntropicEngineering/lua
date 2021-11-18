@@ -12,7 +12,7 @@
 --  and the current value of the 'Adjust' slider for the channel(s) it's playing on. The 'periodic' function then
 --  must return configuration settings appropriate for the types of channels it's playing on.
 --]]
-function waves (setup)
+local function waves (setup)
     local CONST = {
         max_period = 40, min_period = 4,            -- The period of the 'intensity wave', in seconds
         min_TENS_freq = 60, max_TENS_freq = 360,    -- Frequency of TENS pulses, in Hz
@@ -106,4 +106,7 @@ function waves (setup)
     return periodic
 end
 
-script = waves
+local title = "Waves"
+local description = "Pattern intensity ramps up and back down."
+
+return title, description, waves
