@@ -44,14 +44,14 @@ function Program:run(timestamp, adjust)
 
     -- toyOS is a helper library documented elsewhere.
     return {
-        toyOS.OUTPUT_TYPE_TENS = toyOS.TENS{
+        [toyOS.OUTPUT_TYPE_TENS] = toyOS.TENS{
             frequency = self:triangle_wave(delta_t, self.min_TENS_freq, self.max_TENS_freq),
             width = self:triangle_wave(delta_t, self.min_TENS_width, self.max_TENS_width)
         },
-        toyOS.OUTPUT_TYPE_ERM = toyOS.ERM{
+        [toyOS.OUTPUT_TYPE_ERM] = toyOS.ERM{
             power = self:triangle_wave(delta_t, self.min_motor, self.max_motor)
         },
-        toyOS.OUTPUT_TYPE_LED = toyOS.LED{
+        [toyOS.OUTPUT_TYPE_LED] = toyOS.LED{
             r = self:triangle_wave(delta_t, self.min_LED.r, self.max_LED.r),
             g = self:triangle_wave(delta_t, self.min_LED.g, self.max_LED.g),
             b = self:triangle_wave(delta_t, self.min_LED.b, self.max_LED.b),
