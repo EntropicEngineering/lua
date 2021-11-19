@@ -53,7 +53,7 @@ if (CONFIG_LUA)
     zephyr_library_sources(
             ${ZEPHYR_CURRENT_MODULE_DIR}/lapi.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lauxlib.c
-#            ${ZEPHYR_CURRENT_MODULE_DIR}/lbaselib.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/lbaselib.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lcode.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lctype.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/ldebug.c
