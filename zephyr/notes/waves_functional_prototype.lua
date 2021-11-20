@@ -86,9 +86,9 @@ local function waves (setup)
 
         -- A lookup table to match the correct output values to the type of output for a given channel
         local outputs_table = {
-            toyOS.OUTPUT_TYPE_TENS = toyOS.TENS{frequency = update_TENS_freq(dt), width = update_TENS_width(dt)},
-            toyOS.OUTPUT_TYPE_ERM = toyOS.ERM{power = update_motor_power(dt)},
-            toyOS.OUTPUT_TYPE_LED = toyOS.LED(update_LED(dt))
+            [toyOS.OUTPUT_TYPE_TENS] = toyOS.TENS{frequency = update_TENS_freq(dt), width = update_TENS_width(dt)},
+            [toyOS.OUTPUT_TYPE_ERM] = toyOS.ERM{power = update_motor_power(dt)},
+            [toyOS.OUTPUT_TYPE_LED] = toyOS.LED(update_LED(dt))
         }
 
         -- We only want to return settings for channels that we have control over.
@@ -106,7 +106,7 @@ local function waves (setup)
     return periodic
 end
 
-local metadata{
+local metadata = {
     title = "Waves",
     description = "Pattern intensity ramps up and back down."
 }
