@@ -11,6 +11,9 @@
 #include <limits.h>
 #include <stddef.h>
 
+// Include Zephyr config, also includes bridges into KConfig for some settings
+#include "zephyr/compat/conf.h"
+
 
 /*
 ** ===================================================================
@@ -778,8 +781,6 @@
 ** without modifying the main part of the file.
 */
 
-
-#include "zephyr/compat/conf.h"
 
 
 #endif

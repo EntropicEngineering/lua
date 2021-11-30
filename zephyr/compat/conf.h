@@ -1,5 +1,4 @@
 
-// Included by luaconf.h, use this to set values
+// Included by luaconf.h, bounces settings to KConfig options
 
-#undef lua_getlocaledecpoint
-#define lua_getlocaledecpoint() '.'
+#define lua_getlocaledecpoint() CONFIG_LUA_LOCALE_DECPOINT

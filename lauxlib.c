@@ -705,7 +705,7 @@ LUALIB_API void luaL_unref (lua_State *L, int t, int ref) {
 ** =======================================================
 */
 
-#if 0
+#if CONFIG_LUA_ENABLE_FS
 
 typedef struct LoadF {
   int n;  /* number of pre-read characters */

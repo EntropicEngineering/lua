@@ -40,16 +40,46 @@
 ** program
 */
 static const luaL_Reg loadedlibs[] = {
+#ifdef CONFIG_LUA_ENABLE_LIB_BASE
   {LUA_GNAME, luaopen_base},
+#endif // CONFIG_LUA_ENABLE_LIB_BASE
+
+#ifdef CONFIG_LUA_ENABLE_LIB_PACKAGE
   {LUA_LOADLIBNAME, luaopen_package},
+#endif // CONFIG_LUA_ENABLE_LIB_PACKAGE
+
+#ifdef CONFIG_LUA_ENABLE_LIB_COROUTINE
   {LUA_COLIBNAME, luaopen_coroutine},
+#endif // CONFIG_LUA_ENABLE_LIB_COROUTINE
+
+#ifdef CONFIG_LUA_ENABLE_LIB_TABLE
   {LUA_TABLIBNAME, luaopen_table},
+#endif // CONFIG_LUA_ENABLE_LIB_TABLE
+
+#ifdef CONFIG_LUA_ENABLE_LIB_IO
   {LUA_IOLIBNAME, luaopen_io},
+#endif // CONFIG_LUA_ENABLE_LIB_IO
+
+#ifdef CONFIG_LUA_ENABLE_LIB_OS
   {LUA_OSLIBNAME, luaopen_os},
+#endif // CONFIG_LUA_ENABLE_LIB_OS
+
+#ifdef CONFIG_LUA_ENABLE_LIB_STRING
   {LUA_STRLIBNAME, luaopen_string},
+#endif // CONFIG_LUA_ENABLE_LIB_STRING
+
+#ifdef CONFIG_LUA_ENABLE_LIB_MATH
   {LUA_MATHLIBNAME, luaopen_math},
+#endif // CONFIG_LUA_ENABLE_LIB_MATH
+
+#ifdef CONFIG_LUA_ENABLE_LIB_UTF8
   {LUA_UTF8LIBNAME, luaopen_utf8},
+#endif // CONFIG_LUA_ENABLE_LIB_UTF8
+
+#ifdef CONFIG_LUA_ENABLE_LIB_DEBUG
   {LUA_DBLIBNAME, luaopen_debug},
+#endif // CONFIG_LUA_ENABLE_LIB_DEBUG
+
   {NULL, NULL}
 };
 

@@ -321,7 +321,7 @@ static int load_aux (lua_State *L, int status, int envidx) {
   }
 }
 
-#if 0
+#if CONFIG_LUA_ENABLE_FS
 
 static int luaB_loadfile (lua_State *L) {
   const char *fname = luaL_optstring(L, 1, NULL);
@@ -393,7 +393,7 @@ static int luaB_load (lua_State *L) {
 
 /* }====================================================== */
 
-#if 0
+#if CONFIG_LUA_ENABLE_FS
 
 static int dofilecont (lua_State *L, int d1, lua_KContext d2) {
   (void)d1;  (void)d2;  /* only to match 'lua_Kfunction' prototype */
@@ -497,11 +497,19 @@ static int luaB_tostring (lua_State *L) {
 static const luaL_Reg base_funcs[] = {
   {"assert", luaB_assert},
   {"collectgarbage", luaB_collectgarbage},
-// {"dofile", luaB_dofile},
+
+#ifdef CONFIG_LUA_ENABLE_FS
+  {"dofile", luaB_dofile},
+#endif //CONFIG_LUA_ENABLE_FS
+
   {"error", luaB_error},
   {"getmetatable", luaB_getmetatable},
   {"ipairs", luaB_ipairs},
-// {"loadfile", luaB_loadfile},
+  
+#ifdef CONFIG_LUA_ENABLE_FS
+  {"loadfile", luaB_loadfile},
+#endif // CONFIG_LUA_ENABLE_FS
+
   {"load", luaB_load},
   {"next", luaB_next},
   {"pairs", luaB_pairs},

@@ -25,11 +25,103 @@ module-str = lua
 source "subsys/logging/Kconfig.template.log_config"
 
 config APP_LINK_WITH_LUA
-bool "Link 'app' with Lua"
-default y
+    bool "Link 'app' with Lua"
+    default y
     help
         Add Lua header files to the 'app' include path. It may be
         disabled if the include paths for Lua are causing aliasing
         issues for 'app'.
+
+choice
+    prompt "Select mode of implementing LUAI_THROW"
+    default LUA_EXCEPTION_IMPLEMENTATION_GCC_LONGJMP
+
+    config LUA_EXCEPTION_IMPLEMENTATION_PANIC
+        bool "Panic"
+        help
+            Implement exceptions with a stub that just calls abort().
+            Minimal compiler support needed, but will mean many lua errors
+            turn into a call to abort() and are unrecoverable.
+
+    config LUA_EXCEPTION_IMPLEMENTATION_GCC_LONGJMP
+        bool "GCC intrinsic longjmp"
+        help
+            Implement exceptions via the gcc longjmp intrinsic.
+            Provided the compiler supports it, will behave correctly.
+endchoice
+
+config LUA_ENABLE_LOAD_BINARY
+    bool "Allow lua to load binary chunks"
+    default y
+
+config LUA_ENABLE_LOAD_STRING
+    bool "Allow lua to load string chunks"
+    default y
+
+config LUA_ENABLE_FS
+    bool "Implement lua filesystem routines via Zephyr VFS"
+    default n
+    depends on FILE_SYSTEM
+    depends on LUA_UNIMPLEMENTED
+
+config LUA_ENABLE_LIB_BASE
+    bool "Enable lua base library"
+    default y
+
+menu "Lua library support"
+    depends on LUA_ENABLE_LIB_BASE
+
+    config LUA_ENABLE_LIB_DEBUG
+        bool "Enable lua debug library"
+        default n
+
+    config LUA_ENABLE_LIB_COROUTINE
+        bool "Enable lua coroutine library"
+        default n
+        depends on LUA_UNIMPLEMENTED
+
+    config LUA_ENABLE_LIB_PACKAGE
+        bool "Enable lua package (module-loading) library"
+        default n
+        depends on LUA_ENABLE_FS
+        depends on LUA_UNIMPLEMENTED
+
+    config LUA_ENABLE_LIB_TABLE
+        bool "Enable lua table manipulation library"
+        default n
+
+    config LUA_ENABLE_LIB_IO
+        bool "Enable lua io library"
+        default n
+        depends on LUA_ENABLE_FS
+        depends on LUA_UNIMPLEMENTED
+
+    config LUA_ENABLE_LIB_OS
+        bool "Enable lua os library"
+        default n
+        depends on LUA_ENABLE_FS
+        depends on LUA_UNIMPLEMENTED
+
+    config LUA_ENABLE_LIB_STRING
+        bool "Enable lua string library"
+        default n
+        depends on LUA_UNIMPLEMENTED
+
+    config LUA_ENABLE_LIB_MATH
+        bool "Enable lua math library"
+        default n
+        depends on LUA_UNIMPLEMENTED
+
+    config LUA_ENABLE_LIB_UTF8
+        bool "Enable lua utf8 library"
+        default n
+        depends on LUA_UNIMPLEMENTED
+endmenu
+
+menu "Lua internal settings"
+    config CONFIG_LUA_LOCALE_DECPOINT
+        string "Lua floating point decimal value"
+        default "."
+endmenu
 
 endif # LUA

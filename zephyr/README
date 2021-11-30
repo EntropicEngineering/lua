@@ -1,0 +1,5 @@
+
+KConfig symbols have been defined for adaptations made during porting to Zephyr.
+A special symbol LUA_UNIMPLEMENTED is depended on by those features not yet supported.
+
+Lua-native config (i.e., to override luaconf.h) is added as needed with proxy symbols via zephyr/compat/conf.h.
