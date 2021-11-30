@@ -53,7 +53,6 @@ if (CONFIG_LUA)
     zephyr_library_sources(
             ${ZEPHYR_CURRENT_MODULE_DIR}/lapi.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lauxlib.c
-            ${ZEPHYR_CURRENT_MODULE_DIR}/lbaselib.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lcode.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lctype.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/ldebug.c
@@ -76,6 +75,17 @@ if (CONFIG_LUA)
             ${ZEPHYR_CURRENT_MODULE_DIR}/lvm.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lzio.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/compat.c)
+
+    zephyr_library_sources_ifdef(CONFIG_LUA_ENABLE_LIB_BASE ${ZEPHYR_CURRENT_MODULE_DIR}/lbaselib.c)
+    zephyr_library_sources_ifdef(CONFIG_LUA_ENABLE_LIB_DEBUG ${ZEPHYR_CURRENT_MODULE_DIR}/ldblib.c)
+    zephyr_library_sources_ifdef(CONFIG_LUA_ENABLE_LIB_COROUTINE ${ZEPHYR_CURRENT_MODULE_DIR}/lcorolib.c)
+    zephyr_library_sources_ifdef(CONFIG_LUA_ENABLE_LIB_PACKAGE ${ZEPHYR_CURRENT_MODULE_DIR}/loadlib.c)
+    zephyr_library_sources_ifdef(CONFIG_LUA_ENABLE_LIB_TABLE ${ZEPHYR_CURRENT_MODULE_DIR}/ltablib.c)
+    zephyr_library_sources_ifdef(CONFIG_LUA_ENABLE_LIB_IO ${ZEPHYR_CURRENT_MODULE_DIR}/liolib.c)
+    zephyr_library_sources_ifdef(CONFIG_LUA_ENABLE_LIB_OS ${ZEPHYR_CURRENT_MODULE_DIR}/loslib.c)
+    zephyr_library_sources_ifdef(CONFIG_LUA_ENABLE_LIB_STRING ${ZEPHYR_CURRENT_MODULE_DIR}/lstrlib.c)
+    zephyr_library_sources_ifdef(CONFIG_LUA_ENABLE_LIB_MATH ${ZEPHYR_CURRENT_MODULE_DIR}/lmathlib.c)
+    zephyr_library_sources_ifdef(CONFIG_LUA_ENABLE_LIB_UTF8 ${ZEPHYR_CURRENT_MODULE_DIR}/lutf8lib.c)
 
     zephyr_library_include_directories(${ZEPHYR_CURRENT_MODULE_DIR})
 

@@ -119,8 +119,8 @@ menu "Lua library support"
 endmenu
 
 menu "Lua internal settings"
-    config CONFIG_LUA_LOCALE_DECPOINT
-        string "Lua floating point decimal value"
+    config LUA_LOCALE_DECPOINT
+        string "Lua floating point decimal symbol"
         default "."
 endmenu
 
