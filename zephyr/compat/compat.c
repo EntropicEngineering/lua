@@ -2,12 +2,13 @@
 #include <logging/log.h>
 #include "zephyr/compat/compat.h"
 #include <kernel.h>
+#include <stdlib.h>
 
 LOG_MODULE_REGISTER(lua_compat, LOG_LEVEL_DBG);
 
-#define STUB() LOG_ERR("lua/zephyrcompat/compat.c: %s invoked!", __func__); while (1) { k_msleep(1000); }
+#define STUB() LOG_ERR("lua/zephyrcompat/compat.c: %s invoked!", __func__); while (1) abort();
 
-l_noret lua_compat_throw(lua_State *L, struct lua_longjmp *errorJmp) { STUB() }
+l_noret lua_compat_throw(lua_State *L, struct lua_longjmp *errorJmp) { STUB(); }
 
 const char * strerror(int e) {
 	LOG_ERR("strerror -> %d", e);
