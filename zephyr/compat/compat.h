@@ -21,7 +21,9 @@ int ispunct(char c);
 
 unsigned int lua_compat_get_cycle32();
 unsigned int lua_compat_get_rand32();
-void lua_compat_writestring(const char* s, const int l);
-void lua_compat_writestringerror(const char* m, const char* s);
+
+// User must implement the following in application code:
+void lua_compat_writestring(void *ud, const char* s, const int l);
+void lua_compat_writestringerror(void *ud, const char* m, const char* s);
 
 #endif //__LUA_ZEPHYRCOMPAT_COMPAT_H__

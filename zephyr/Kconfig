@@ -71,6 +71,10 @@ config LUA_ENABLE_AUXLIB
 config LUA_ENABLE_CONSOLE_OUTPUT
     bool "Enable lua console output (i.e. print)"
     default y
+    help
+        Implements via delegating to a Zephyr logger by default.
+        Override the weak symbols lua_compat_writestring{,error}
+        to implement printing in application code (recommended)
 
 config LUA_ENABLE_CONSOLE_INPUT
     bool "Enable console input (i.e. interactivity)"

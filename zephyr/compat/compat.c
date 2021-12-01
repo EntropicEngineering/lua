@@ -2,6 +2,7 @@
 #include <logging/log.h>
 #include "zephyr/compat/compat.h"
 #include <kernel.h>
+#include <random/rand32.h>
 #include <stdlib.h>
 
 LOG_MODULE_REGISTER(lua_compat, LOG_LEVEL_DBG);
@@ -213,10 +214,11 @@ unsigned int lua_compat_get_rand32() {
 	return sys_rand32_get();
 }
 
-void lua_compat_writestring(const char* s, const int l) {
-	LOG_INF("lua_compat_writestring: %.*s", l, s);
+__weak void lua_compat_writestring(void *ud, const char* s, const int l) {
+	LOG_INF("lua: %.*s", l, s);
 }
-void lua_compat_writestringerror(const char* f, const char* s){
-	LOG_ERR("lua_compat_writestringerror: %s", s);
+
+__weak void lua_compat_writestringerror(void *ud, const char* f, const char* s){
+	LOG_ERR("lua: ERROR: %s", s);
 }
 
