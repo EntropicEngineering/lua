@@ -33,8 +33,6 @@ typedef intptr_t         __jmp_buf[5];
 
 #define HUGE_VAL (__builtin_inf())
 
-#define lua_getlocaledecpoint() (CONFIG_LUA_LOCALE_DECPOINT[0])
-
 #ifndef CONFIG_LUA_ENABLE_RANDOMIZE_HASHES
 #define luai_makeseed(L) (~0)
 #else
