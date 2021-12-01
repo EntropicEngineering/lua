@@ -192,8 +192,27 @@ double pow (double base, double exponent) {
 	return v;
 }
 
+int islower(char c) { return ('a' <= c) && ('z' >= c); }
+int ispunct(char c) {
+	char *s = "~!@#$%^&*()_+`-=;:'\"\\|[]{},./<>?";
+	while ((*s) != 0) {
+		if ((*s) == c) return 1;
+		s++;
+	}
+	return 0;
+}
 
-int lua_compat_randseed() { return 0; }
+
+unsigned int lua_compat_get_cycle32() {
+	// TODO: Need to reimplement these so that they don't cause MPU fault in userland
+	return k_cycle_get_32();
+}
+
+unsigned int lua_compat_get_rand32() {
+	// TODO: Need to reimplement these so that they don't cause MPU fault in userland
+	return sys_rand32_get();
+}
+
 void lua_compat_writestring(const char* s, const int l) {
 	LOG_INF("lua_compat_writestring: %.*s", l, s);
 }

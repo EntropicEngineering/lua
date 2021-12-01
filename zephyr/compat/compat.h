@@ -16,8 +16,11 @@ double frexp (double x, int* exp);
 int strcoll (const char * str1, const char * str2 );
 double fmod (double numer, double denom);
 const char * strerror(int e);
+int islower(char c);
+int ispunct(char c);
 
-int lua_compat_randseed();
+unsigned int lua_compat_get_cycle32();
+unsigned int lua_compat_get_rand32();
 void lua_compat_writestring(const char* s, const int l);
 void lua_compat_writestringerror(const char* m, const char* s);
 

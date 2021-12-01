@@ -23,3 +23,5 @@ typedef intptr_t         __jmp_buf[5];
 #define lua_writestring(s, l) lua_compat_writestring(s, l)
 #define lua_writestringerror(s, p) lua_compat_writestringerror(s, p)
 #define lua_writeline()
+
+#define HUGE_VAL (__builtin_inf())

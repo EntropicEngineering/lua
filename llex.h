@@ -77,6 +77,7 @@ typedef struct LexState {
   TString *envn;  /* environment variable name */
 } LexState;
 
+#ifdef CONFIG_LUA_ENABLE_LOAD_STRING
 
 LUAI_FUNC void luaX_init (lua_State *L);
 LUAI_FUNC void luaX_setinput (lua_State *L, LexState *ls, ZIO *z,
@@ -84,8 +85,10 @@ LUAI_FUNC void luaX_setinput (lua_State *L, LexState *ls, ZIO *z,
 LUAI_FUNC TString *luaX_newstring (LexState *ls, const char *str, size_t l);
 LUAI_FUNC void luaX_next (LexState *ls);
 LUAI_FUNC int luaX_lookahead (LexState *ls);
-LUAI_FUNC l_noret luaX_syntaxerror (LexState *ls, const char *s);
 LUAI_FUNC const char *luaX_token2str (LexState *ls, int token);
 
+#endif // CONFIG_LUA_ENABLE_LOAD_STRING
+
+LUAI_FUNC l_noret luaX_syntaxerror (LexState *ls, const char *s);
 
 #endif

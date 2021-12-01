@@ -772,7 +772,7 @@ static void close_func (LexState *ls) {
   luaC_checkGC(L);
 }
 
-
+#ifdef CONFIG_LUA_ENABLE_LOAD_STRING
 
 /*============================================================*/
 /* GRAMMAR RULES */
@@ -1964,3 +1964,4 @@ LClosure *luaY_parser (lua_State *L, ZIO *z, Mbuffer *buff,
   return cl;  /* closure is on the stack, too */
 }
 
+#endif // CONFIG_LUA_ENABLE_LOAD_STRING

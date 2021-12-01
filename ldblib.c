@@ -416,7 +416,7 @@ static int db_gethook (lua_State *L) {
   return 3;
 }
 
-
+#ifdef CONFIG_LUA_ENABLE_CONSOLE_INPUT
 static int db_debug (lua_State *L) {
   for (;;) {
     char buffer[250];
@@ -430,6 +430,7 @@ static int db_debug (lua_State *L) {
     lua_settop(L, 0);  /* remove eventual returns */
   }
 }
+#endif // CONFIG_LUA_ENABLE_CONSOLE_INPUT
 
 
 static int db_traceback (lua_State *L) {
@@ -455,7 +456,11 @@ static int db_setcstacklimit (lua_State *L) {
 
 
 static const luaL_Reg dblib[] = {
+
+#ifdef CONFIG_LUA_ENABLE_CONSOLE_INPUT
   {"debug", db_debug},
+#endif // CONFIG_LUA_ENABLE_CONSOLE_INPUT
+
   {"getuservalue", db_getuservalue},
   {"gethook", db_gethook},
   {"getinfo", db_getinfo},

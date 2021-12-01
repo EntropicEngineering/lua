@@ -245,7 +245,7 @@ typedef unsigned int IdxT;
 */
 static unsigned int l_randomizePivot (void) {
   clock_t c = clock();
-  time_t t = lua_compat_randseed();
+  time_t t = time(NULL);
   unsigned int buff[sof(c) + sof(t)];
   unsigned int i, rnd = 0;
   memcpy(buff, &c, sof(c) * sizeof(unsigned int));

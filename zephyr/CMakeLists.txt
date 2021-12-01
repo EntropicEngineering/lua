@@ -52,29 +52,34 @@ if (CONFIG_LUA)
 
     zephyr_library_sources(
             ${ZEPHYR_CURRENT_MODULE_DIR}/lapi.c
-            ${ZEPHYR_CURRENT_MODULE_DIR}/lauxlib.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lcode.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lctype.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/ldebug.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/ldo.c
-            ${ZEPHYR_CURRENT_MODULE_DIR}/ldump.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lfunc.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lgc.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/linit.c
-            ${ZEPHYR_CURRENT_MODULE_DIR}/llex.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lmem.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lobject.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lopcodes.c
-            ${ZEPHYR_CURRENT_MODULE_DIR}/lparser.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lstate.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lstring.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/ltable.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/ltests.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/ltm.c
-            ${ZEPHYR_CURRENT_MODULE_DIR}/lundump.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lvm.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lzio.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/compat.c)
+
+    zephyr_library_sources_ifdef(CONFIG_LUA_ENABLE_LOAD_BINARY
+            ${ZEPHYR_CURRENT_MODULE_DIR}/ldump.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/lundump.c)
+
+    zephyr_library_sources_ifdef(CONFIG_LUA_ENABLE_LOAD_STRING
+            ${ZEPHYR_CURRENT_MODULE_DIR}/lparser.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/llex.c)
+
+    zephyr_library_sources_ifdef(CONFIG_LUA_ENABLE_AUXLIB ${ZEPHYR_CURRENT_MODULE_DIR}/lauxlib.c)
 
     zephyr_library_sources_ifdef(CONFIG_LUA_ENABLE_LIB_BASE ${ZEPHYR_CURRENT_MODULE_DIR}/lbaselib.c)
     zephyr_library_sources_ifdef(CONFIG_LUA_ENABLE_LIB_DEBUG ${ZEPHYR_CURRENT_MODULE_DIR}/ldblib.c)

@@ -70,7 +70,7 @@ typedef struct LG {
 
 static unsigned int luai_makeseed (lua_State *L) {
   char buff[3 * sizeof(size_t)];
-  unsigned int h = cast_uint(lua_compat_randseed());
+  unsigned int h = cast_uint(time(NULL));
   int p = 0;
   addbuff(buff, p, L);  /* heap variable */
   addbuff(buff, p, &h);  /* local variable */
@@ -235,7 +235,11 @@ static void f_luaopen (lua_State *L, void *ud) {
   init_registry(L, g);
   luaS_init(L);
   luaT_init(L);
+
+  #ifdef CONFIG_LUA_ENABLE_LOAD_STRING
   luaX_init(L);
+  #endif // CONFIG_LUA_ENABLE_LOAD_STRING
+  
   g->gcrunning = 1;  /* allow gc */
   setnilvalue(&g->nilvalue);  /* now state is complete */
   luai_userstateopen(L);

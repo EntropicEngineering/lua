@@ -51,7 +51,7 @@ choice
 endchoice
 
 config LUA_ENABLE_LOAD_BINARY
-    bool "Allow lua to load binary chunks"
+    bool "Allow lua to load (and store) binary chunks"
     default y
 
 config LUA_ENABLE_LOAD_STRING
@@ -64,9 +64,23 @@ config LUA_ENABLE_FS
     depends on FILE_SYSTEM
     depends on LUA_UNIMPLEMENTED
 
+config LUA_ENABLE_AUXLIB
+    bool "Enable lauxlib (almost always wanted)"
+    default y
+
+config LUA_ENABLE_CONSOLE_OUTPUT
+    bool "Enable lua console output (i.e. print)"
+    default y
+
+config LUA_ENABLE_CONSOLE_INPUT
+    bool "Enable console input (i.e. interactivity)"
+    default n
+    depends on LUA_UNIMPLEMENTED
+
 config LUA_ENABLE_LIB_BASE
     bool "Enable lua base library"
     default y
+    depends on LUA_ENABLE_AUXLIB
 
 menu "Lua library support"
     depends on LUA_ENABLE_LIB_BASE
@@ -74,6 +88,8 @@ menu "Lua library support"
     config LUA_ENABLE_LIB_DEBUG
         bool "Enable lua debug library"
         default n
+        help
+            This is probably not that useful without LUA_ENABLE_CONSOLE_INPUT
 
     config LUA_ENABLE_LIB_COROUTINE
         bool "Enable lua coroutine library"
@@ -90,6 +106,14 @@ menu "Lua library support"
         bool "Enable lua table manipulation library"
         default n
 
+    config LUA_ENABLE_RANDOMIZE_PIVOTS
+        bool "Randomize table pivot operations"
+        default n
+        depends on LUA_ENABLE_LIB_TABLE
+        help
+            Might improve the performance of tablib's quicksort in some cases.
+            Disabled by default to increase determinism.
+
     config LUA_ENABLE_LIB_IO
         bool "Enable lua io library"
         default n
@@ -105,12 +129,16 @@ menu "Lua library support"
     config LUA_ENABLE_LIB_STRING
         bool "Enable lua string library"
         default n
-        depends on LUA_UNIMPLEMENTED
 
     config LUA_ENABLE_LIB_MATH
         bool "Enable lua math library"
         default n
-        depends on LUA_UNIMPLEMENTED
+
+    config LUA_ENABLE_MATH_TRUE_RANDOM
+        bool "Use zephyr's randomness facility (sys_rand32_get, NOT cryptographic) to feed the math lib rng instead of time"
+        default n
+        depends on LUA_ENABLE_LIB_MATH
+        depends on RNG_GENERATOR_CHOICE
 
     config LUA_ENABLE_LIB_UTF8
         bool "Enable lua utf8 library"
@@ -122,6 +150,15 @@ menu "Lua internal settings"
     config LUA_LOCALE_DECPOINT
         string "Lua floating point decimal symbol"
         default "."
+
+    config LUA_ENABLE_RANDOMIZE_HASHES
+        bool "Randomize hash values in the lua interpreter"
+        default n
+        help
+            This is only relevant to avoid tarpit attacks where malicious input
+            hits high-complexity cases in e.g. table lookup. Irrelevant for most
+            MCU applications, disabled by default to increase determinism.
+
 endmenu
 
 endif # LUA

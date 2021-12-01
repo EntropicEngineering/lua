@@ -935,11 +935,23 @@ static void f_parser (lua_State *L, void *ud) {
   int c = zgetc(p->z);  /* read first character */
   if (c == LUA_SIGNATURE[0]) {
     checkmode(L, p->mode, "binary");
-    cl = luaU_undump(L, p->z, p->name);
+    #ifndef CONFIG_LUA_ENABLE_LOAD_BINARY
+      luaO_pushfstring(L,
+         "attempt to load binary chunk (binary loading is disabled)");
+      luaD_throw(L, LUA_ERRSYNTAX);
+    #else // CONFIG_LUA_ENABLE_LOAD_BINARY
+      cl = luaU_undump(L, p->z, p->name);
+    #endif // CONFIG_LUA_ENABLE_LOAD_BINARY
   }
   else {
     checkmode(L, p->mode, "text");
-    cl = luaY_parser(L, p->z, &p->buff, &p->dyd, p->name, c);
+    #ifndef CONFIG_LUA_ENABLE_LOAD_STRING
+      luaO_pushfstring(L,
+         "attempt to load string chunk (string loading is disabled)");
+      luaD_throw(L, LUA_ERRSYNTAX);
+    #else // CONFIG_LUA_ENABLE_LOAD_STRING
+      cl = luaY_parser(L, p->z, &p->buff, &p->dyd, p->name, c);
+    #endif // CONFIG_LUA_ENABLE_LOAD_STRING
   }
   lua_assert(cl->nupvalues == cl->p->sizeupvalues);
   luaF_initupvals(L, cl);
