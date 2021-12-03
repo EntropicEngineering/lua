@@ -4,6 +4,7 @@
 #include <lauxlib.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <string.h>
 
 #define assert0(x) assert(x==0);
 
@@ -57,22 +58,108 @@ void table_to_string(lua_State* l, char* s) {
     lua_pop(l, 1);
 }
 
+#define LUA_OUTPUT_TYPE_TENS 1
+#define LUA_OUTPUT_TYPE_ERM 2
+#define LUA_OUTPUT_TYPE_LED 3
+
+void create_toyOS(lua_State* l) {
+    lua_newtable(l);
+
+    lua_pushstring(l, "TENS");
+    lua_pushcfunction(l, noop);
+    lua_settable(l, -3);
+
+    lua_pushstring(l, "ERM");
+    lua_pushcfunction(l, noop);
+    lua_settable(l, -3);
+
+    lua_pushstring(l, "LED");
+    lua_pushcfunction(l, noop);
+    lua_settable(l, -3);
+
+    lua_pushstring(l, "OUTPUT_TYPE_TENS");
+    lua_pushinteger(l, LUA_OUTPUT_TYPE_TENS);
+    lua_settable(l, -3);
+
+    lua_pushstring(l, "OUTPUT_TYPE_ERM");
+    lua_pushinteger(l, LUA_OUTPUT_TYPE_ERM);
+    lua_settable(l, -3);
+
+    lua_pushstring(l, "OUTPUT_TYPE_LED");
+    lua_pushinteger(l, LUA_OUTPUT_TYPE_LED);
+    lua_settable(l, -3);
+
+    lua_setglobal(l, "toyOS");
+}
+
+#define DUMP_BUF_BLOCK_SIZE 1024
+typedef struct {
+    char*  buf;
+    size_t size;
+    size_t written;
+} dump_buf_t;
+
+int dump_buf_writer(lua_State* l, void* p, size_t sz, void* ud) {
+    dump_buf_t* buf = (dump_buf_t*)ud;
+    if ((buf->written + sz) >= buf->size) {
+        size_t newsize = buf->size;
+        while (newsize < (buf->written + sz)) {
+            newsize += DUMP_BUF_BLOCK_SIZE;
+        }
+        buf->buf = realloc(buf->buf, newsize);
+        if (buf->buf == 0) {
+            return 1;
+        }
+    }
+
+    memcpy(buf->buf + buf->written, p, sz);
+    buf->written += sz;
+
+    return 0;
+}
+
 int main (void)
 {
     lua_State *l = luaL_newstate();
     luaL_openlibs(l);
 
-    lua_register(l, "TENS", noop);
-    lua_register(l, "ERM", noop);
-    lua_register(l, "LED", noop);
+    create_toyOS(l);
 
-    // load script
-    assert0(luaL_dofile(l, "waves_prototype.lua"));
-
-    // get table_to_string
     assert0(luaL_dofile(l, "util.lua"));
 
-    lua_getglobal(l, "script");
+    // load script
+    assert0(luaL_loadfile(l, "waves_functional_prototype.lua"));
+    lua_call(l, 0, 2); // 0 arguments, 2 returns
+
+    lua_pushvalue(l, -2); // metadata
+    table_to_string(l, "metadata table:");
+    lua_pop(l, 1);
+
+    dumpStack(l);
+
+    dump_buf_t buf = {
+        malloc(DUMP_BUF_BLOCK_SIZE),
+        DUMP_BUF_BLOCK_SIZE,
+        0
+    };
+
+    lua_dump(l, (lua_Writer)dump_buf_writer, &buf, 1); // 1 = strip
+
+    lua_close(l);
+
+    printf("buf.written = %d\n", buf.written);
+    printf(" --- Creating new state --- \n");
+
+    l = luaL_newstate();
+    luaL_openlibs(l);
+
+    create_toyOS(l);
+
+    assert0(luaL_dofile(l, "util.lua"));
+
+    assert0(luaL_loadbufferx(l, buf.buf, buf.written, "script", "b"));
+
+    dumpStack(l);
 
     // set up setup
     // setup = {
@@ -99,15 +186,15 @@ int main (void)
 	    lua_newtable(l);
 
 	    lua_pushinteger(l, 1); // Indexes start at 1
-        lua_pushstring(l, "OUTPUT_TYPE_TENS");
+        lua_pushinteger(l, LUA_OUTPUT_TYPE_TENS);
         lua_settable(l, -3);
 
         lua_pushinteger(l, 2);
-        lua_pushstring(l, "OUTPUT_TYPE_ERM");
+        lua_pushinteger(l, LUA_OUTPUT_TYPE_ERM);
         lua_settable(l, -3);
 
         lua_pushinteger(l, 3);
-        lua_pushstring(l, "OUTPUT_TYPE_LED");
+        lua_pushinteger(l, LUA_OUTPUT_TYPE_LED);
         lua_settable(l, -3);
 	}
 

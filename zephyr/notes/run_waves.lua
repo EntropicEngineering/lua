@@ -3,17 +3,14 @@ io = require('io')
 
 dofile('util.lua')
 
-function TENS(x)
-	return x
-end
-
-function ERM(x)
-	return x
-end
-
-function LED(x)
-	return x
-end
+toyOS = {
+	TENS = function (x) return x end,
+	ERM = function (x) return x end,
+	LED = function (x) return x end,
+	OUTPUT_TYPE_TENS = 1,
+	OUTPUT_TYPE_ERM = 2,
+	OUTPUT_TYPE_LED = 3,
+}
 
 metadata, waves = dofile('waves_functional_prototype.lua')
 
@@ -21,9 +18,9 @@ setup = {
 	timestamp = 0,
 	adjust_max = 0xffff,
 	active_channels = {
-		'OUTPUT_TYPE_TENS',
-		'OUTPUT_TYPE_ERM',
-		'OUTPUT_TYPE_LED'
+		toyOS.OUTPUT_TYPE_TENS,
+		toyOS.OUTPUT_TYPE_ERM,
+		toyOS.OUTPUT_TYPE_LED
 	}
 }
 
@@ -39,15 +36,15 @@ while (timestamp < 20) do
 	v = iterator(timestamp, adjust)
 
 	print('ts=' .. timestamp)
-	print('\t TENS = ' .. table_to_string(v[1]))
-	print('\t ERM  = ' .. table_to_string(v[2]))
-	print('\t LED  = ' .. table_to_string(v[3]))
+	print('\t TENS = ' .. table_to_string(v[toyOS.OUTPUT_TYPE_TENS]))
+	print('\t ERM  = ' .. table_to_string(v[toyOS.OUTPUT_TYPE_ERM]))
+	print('\t LED  = ' .. table_to_string(v[toyOS.OUTPUT_TYPE_LED]))
 
 	file:write(table.concat({
 		timestamp,
-		v[1].pulse, v[1].frequency,
+		v[1].width, v[1].frequency,
 		v[2].power,
-		v[3].values.r, v[3].values.g, v[3].values.b
+		v[3].r, v[3].g, v[3].b
 	}, ",").."\n")
 
 	timestamp = timestamp + 0.1
