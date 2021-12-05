@@ -58,6 +58,10 @@ config LUA_ENABLE_LOAD_STRING
     bool "Allow lua to load string chunks"
     default y
 
+config LUA_32BITS
+    bool "Use 32-bit floating-point and integer types (default: 64)"
+    default y
+
 config LUA_ENABLE_FS
     bool "Implement lua filesystem routines via Zephyr VFS"
     default n

@@ -3,6 +3,7 @@
 // See also: conf.h
 
 #include "zephyr/compat/compat.h"
+#include "zephyr/compat/conf.h"
 #include <stdint.h>
 
 #define l_signalT int
@@ -30,8 +31,6 @@ typedef intptr_t         __jmp_buf[5];
 #define lua_writestringerror(s, p)
 #define lua_writeline() 
 #endif // LUA_ENABLE_CONSOLE_OUTPUT
-
-#define HUGE_VAL (__builtin_inf())
 
 #ifndef CONFIG_LUA_ENABLE_RANDOMIZE_HASHES
 #define luai_makeseed(L) (~0)
