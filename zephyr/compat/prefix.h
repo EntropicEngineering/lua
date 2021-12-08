@@ -44,8 +44,14 @@ typedef intptr_t         __jmp_buf[5];
 #define l_randomizePivot() lua_compat_get_cycle32()
 #endif
 
+#ifdef CONFIG_LUA_ENABLE_MATH_ZERO_RANDOM
+#define lua_compat_randseed() (0)
+#endif
+
 #ifdef CONFIG_LUA_ENABLE_MATH_TRUE_RANDOM
 #define lua_compat_randseed() lua_compat_get_rand32()
-#else
+#endif
+
+#ifdef LUA_ENABLE_MATH_TIME_RANDOM
 #define lua_compat_randseed() lua_compat_get_cycle32()
 #endif

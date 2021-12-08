@@ -151,11 +151,21 @@ menu "Lua library support"
         default y
         depends on LUA_ENABLE_LIB_MATH
 
-    config LUA_ENABLE_MATH_TRUE_RANDOM
-        bool "Use zephyr's randomness facility (sys_rand32_get, NOT cryptographic) to feed the math lib rng instead of time"
-        default n
+    choice
+        prompt "Select lua math library random seed source"
+        default LUA_ENABLE_MATH_TIME_RANDOM
         depends on LUA_ENABLE_LIB_MATH
-        depends on RNG_GENERATOR_CHOICE
+
+        config LUA_ENABLE_MATH_TRUE_RANDOM
+            bool "Use zephyr's randomness facility (sys_rand32_get, NOT cryptographic) to feed the math lib rng instead of time"
+            depends on RNG_GENERATOR_CHOICE
+
+        config LUA_ENABLE_MATH_TIME_RANDOM
+            bool "Use clock as poor randomness seed"
+
+        config LUA_ENABLE_MATH_ZERO_RANDOM
+            bool "Use zero as a lua RNG seed (i.e., always the same series of numbers)"
+    endchoice
 
     config LUA_ENABLE_LIB_UTF8
         bool "Enable lua utf8 library"
