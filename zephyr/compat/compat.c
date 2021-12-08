@@ -48,44 +48,6 @@ int isdigit(char x) {
 	return (x >= '0') && (x <= '9');
 }
 
-double strtod (const char* str, char** endptr) {
-	// TODO: This is SO NOT a standards-conformant (or even good) implementation
-	//  (no infs, no nan, no e+, etc.) but good enough for 1, 1.2, and .2
-	//  The newlib and others impl involve dynamic allocation (!?!?) and it was
-	//  expedient to just write one
-
-	char* cursor = (char*) str;
-	while (isdigit(*cursor)) {
-		cursor++;
-	}
-
-	char* point_or_end = cursor;
-
-	double number = 0;
-	double mul = 1;
-	while (cursor > str) {
-		cursor--;
-		number += ((*cursor) - '0') * mul;
-		mul *= 10;
-	}
-
-	cursor = point_or_end;
-	mul = 0.1;
-	if ((*cursor) == '.') {
-		cursor++;
-
-		while (isdigit(*cursor)) {
-			number += ((*cursor) - '0') * mul;
-			mul /= 10;
-			cursor++;
-		}
-	}
-
-	if (endptr != NULL) *endptr = cursor;
-
-	return number;
-}
-
 int islower(char c) { return ('a' <= c) && ('z' >= c); }
 int ispunct(char c) {
 	char *s = "~!@#$%^&*()_+`-=;:'\"\\|[]{},./<>?";

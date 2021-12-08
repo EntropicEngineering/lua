@@ -69,7 +69,8 @@ if (CONFIG_LUA)
             ${ZEPHYR_CURRENT_MODULE_DIR}/ltm.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lvm.c
             ${ZEPHYR_CURRENT_MODULE_DIR}/lzio.c
-            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/compat.c)
+            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/compat.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/strtod.c)
 
     zephyr_library_sources_ifdef(CONFIG_LUA_ENABLE_LOAD_BINARY
             ${ZEPHYR_CURRENT_MODULE_DIR}/ldump.c
