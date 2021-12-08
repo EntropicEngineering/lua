@@ -5,3 +5,5 @@ A special symbol LUA_UNIMPLEMENTED is depended on by those features not yet supp
 Lua-native config (i.e., to override luaconf.h and implement l_ functions) is added as needed with proxy symbols via zephyr/compat/conf.h and prefix.h.
 
 Override lua_compat_writestring (weak linkage) to implement I/O for lauxlib helpers. Use *ud to implement per-interpreter i/o. luaL_newstate has been extended (luaL_newstate_ex) to allow specifying allocator and *ud pointer from user code without copying parts of lauxlib.
+
+TODO: Decide on what settings from https://gcc.gnu.org/wiki/FloatingPointMath we want to apply to floating-point routines here.

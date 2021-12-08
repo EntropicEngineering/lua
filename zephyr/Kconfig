@@ -62,6 +62,10 @@ config LUA_32BITS
     bool "Use 32-bit floating-point and integer types (default: 64)"
     default y
 
+config LUA_COMPAT_LT_LE
+    bool "Enable emulation of the '__le' metamethod using '__lt'"
+    default y
+
 config LUA_ENABLE_FS
     bool "Implement lua filesystem routines via Zephyr VFS"
     default n
@@ -141,6 +145,11 @@ menu "Lua library support"
     config LUA_ENABLE_LIB_MATH
         bool "Enable lua math library"
         default n
+
+    config LUA_ENABLE_LIB_MATH_COMPAT
+        bool "Enable deprecated functions from Lua 5.3 in math library"
+        default y
+        depends on LUA_ENABLE_LIB_MATH
 
     config LUA_ENABLE_MATH_TRUE_RANDOM
         bool "Use zephyr's randomness facility (sys_rand32_get, NOT cryptographic) to feed the math lib rng instead of time"

@@ -89,8 +89,34 @@ if (CONFIG_LUA)
     zephyr_library_sources_ifdef(CONFIG_LUA_ENABLE_LIB_IO ${ZEPHYR_CURRENT_MODULE_DIR}/liolib.c)
     zephyr_library_sources_ifdef(CONFIG_LUA_ENABLE_LIB_OS ${ZEPHYR_CURRENT_MODULE_DIR}/loslib.c)
     zephyr_library_sources_ifdef(CONFIG_LUA_ENABLE_LIB_STRING ${ZEPHYR_CURRENT_MODULE_DIR}/lstrlib.c)
-    zephyr_library_sources_ifdef(CONFIG_LUA_ENABLE_LIB_MATH ${ZEPHYR_CURRENT_MODULE_DIR}/lmathlib.c)
     zephyr_library_sources_ifdef(CONFIG_LUA_ENABLE_LIB_UTF8 ${ZEPHYR_CURRENT_MODULE_DIR}/lutf8lib.c)
+
+    zephyr_library_sources_ifdef(CONFIG_LUA_ENABLE_LIB_MATH 
+            ${ZEPHYR_CURRENT_MODULE_DIR}/lmathlib.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/math/arm/trigf.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/math/arm/tablesf.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/math/arm/sqrtf.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/math/openlibm/e_acosf.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/math/openlibm/e_asinf.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/math/openlibm/e_atan2f.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/math/openlibm/e_coshf.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/math/openlibm/e_expf.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/math/openlibm/e_fmodf.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/math/openlibm/e_log10f.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/math/openlibm/e_log2f.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/math/openlibm/e_logf.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/math/openlibm/e_powf.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/math/openlibm/e_sinhf.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/math/openlibm/k_expf.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/math/openlibm/s_atanf.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/math/openlibm/s_ceilf.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/math/openlibm/s_copysignf.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/math/openlibm/s_expm1f.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/math/openlibm/s_fabsf.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/math/openlibm/s_floorf.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/math/openlibm/s_frexpf.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/math/openlibm/s_scalbnf.c
+            ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/compat/math/openlibm/s_tanhf.c)
 
     zephyr_library_include_directories(${ZEPHYR_CURRENT_MODULE_DIR})
 
